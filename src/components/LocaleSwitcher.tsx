@@ -1,0 +1,74 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useLocale } from "next-intl";
+import { defaultLocale, type Locale, locales } from "@/i18n";
+
+const getLocaleLabel = (locale: Locale): string => {
+  try {
+    const displayNames = new Intl.DisplayNames([locale], { type: "language" });
+    return displayNames.of(locale) ?? locale.toUpperCase();
+  } catch {
+    return locale.toUpperCase();
+  }
+};
+
+const localeFlags: Record<Locale, string> = {
+	en: "🇬🇧",
+	fr: "🇫🇷",
+	es: "🇪🇸",
+};
+
+export default function LocaleSwitcher() {
+	const activeLocale = useLocale();
+	const pathname = usePathname();
+
+	// Remove the locale prefix from the pathname to get the base path
+	const getBasePath = (path: string) => {
+		for (const locale of locales) {
+			if (path.startsWith(`/${locale}`)) {
+				return path.slice(locale.length + 1) || "/";
+			}
+		}
+		return path;
+	};
+
+	const basePath = getBasePath(pathname);
+
+	return (
+		<nav aria-label="Language selector" className="relative">
+			<div className="flex items-center gap-2 p-2 bg-zinc-100 dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800">
+				{(locales as readonly Locale[]).map((locale) => {
+					const isActive = locale === activeLocale;
+					// Build the href based on whether it's the default locale
+					const href =
+						locale === defaultLocale ? basePath : `/${locale}${basePath}`;
+					return (
+						<Link
+							key={locale}
+							href={href}
+							aria-current={isActive ? "page" : undefined}
+							className={`
+                flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all
+                ${
+									isActive
+										? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-50 shadow-sm"
+										: "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+								}
+              `}
+						>
+							<span className="text-lg" aria-hidden="true">
+								{localeFlags[locale]}
+							</span>
+							<span className="hidden sm:inline">
+								{getLocaleLabel(locale)}
+							</span>
+							<span className="sm:hidden">{locale.toUpperCase()}</span>
+						</Link>
+					);
+				})}
+			</div>
+		</nav>
+	);
+}

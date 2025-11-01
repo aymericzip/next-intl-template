@@ -1,36 +1,168 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Internationalization with next-intl
 
-## Getting Started
+This is a [Next.js](https://nextjs.org) project with complete internationalization (i18n) setup using [next-intl](https://next-intl-docs.vercel.app/).
 
-First, run the development server:
+## 🌍 Supported Languages
+
+- 🇬🇧 English (default)
+- 🇫🇷 French
+- 🇪🇸 Spanish
+
+## 🚀 Getting Started
+
+First, install the dependencies:
+
+```bash
+npm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📁 Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+.
+├── locales/                    # Translation files
+│   ├── en/
+│   │   ├── common.json
+│   │   └── about.json
+│   ├── fr/
+│   │   ├── common.json
+│   │   └── about.json
+│   └── es/
+│       ├── common.json
+│       └── about.json
+└── src/
+    ├── i18n.ts                # i18n configuration
+    ├── middleware.ts          # Locale detection and routing
+    ├── app/
+    │   ├── [locale]/          # Dynamic locale routes
+    │   │   ├── layout.tsx     # Root layout with locale
+    │   │   ├── page.tsx       # Home page
+    │   │   └── about/
+    │   │       ├── layout.tsx # About metadata
+    │   │       └── page.tsx   # About page
+    │   ├── sitemap.ts         # Internationalized sitemap
+    │   └── robots.ts          # Internationalized robots.txt
+    └── components/
+        ├── ClientComponentExample.tsx  # Client component with translations
+        ├── ServerComponent.tsx         # Server component with translations
+        └── LocaleSwitcher.tsx          # Language switcher
+```
 
-## Learn More
+## 🎯 Key Features Implemented
 
-To learn more about Next.js, take a look at the following resources:
+### ✅ Complete i18n Setup
+- **next-intl** integration with Next.js App Router
+- Dynamic locale-based routing (`/`, `/fr`, `/es`)
+- Automatic locale detection from browser settings
+- Middleware for handling locale routing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### ✅ Translation Management
+- Namespace-based translations (`common.json`, `about.json`)
+- Code-splitting: only load translations needed per page
+- TypeScript support for type-safe locales
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### ✅ Components
+- **Server Components**: Pre-translated content for optimal performance
+- **Client Components**: Interactive components with translation hooks
+- **Locale Switcher**: Beautiful, styled language selector with flags
 
-## Deploy on Vercel
+### ✅ SEO Optimization
+- Internationalized metadata (title, description)
+- `hreflang` tags for alternate language versions
+- Canonical URLs per locale
+- Internationalized sitemap.xml
+- Internationalized robots.txt
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### ✅ Best Practices
+- HTML `lang` and `dir` attributes set correctly
+- Proper accessibility with ARIA labels
+- Static page generation for all locales (SSG)
+- Server-side rendering (SSR) support
+- Type-safe locale configuration
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🔧 How It Works
+
+### Adding a New Language
+
+1. Add the locale to `src/i18n.ts`:
+```typescript
+export const locales = ["en", "fr", "es", "de"] as const;
+```
+
+2. Create translation files:
+```
+locales/de/common.json
+locales/de/about.json
+```
+
+3. Add to the locale switcher in `src/components/LocaleSwitcher.tsx`:
+```typescript
+const localeLabels: Record<Locale, string> = {
+  en: "English",
+  fr: "Français",
+  es: "Español",
+  de: "Deutsch",
+};
+
+const localeFlags: Record<Locale, string> = {
+  en: "🇬🇧",
+  fr: "🇫🇷",
+  es: "🇪🇸",
+  de: "🇩🇪",
+};
+```
+
+### Adding Translations to a Page
+
+**Server Components:**
+```typescript
+import { getTranslations } from "next-intl/server";
+
+export default async function Page() {
+  const t = await getTranslations("namespace");
+  return <h1>{t("key")}</h1>;
+}
+```
+
+**Client Components:**
+```typescript
+"use client";
+import { useTranslations } from "next-intl";
+
+export default function Component() {
+  const t = useTranslations("namespace");
+  return <h1>{t("key")}</h1>;
+}
+```
+
+### URL Structure
+
+- English (default): `/`, `/about`
+- French: `/fr`, `/fr/about`
+- Spanish: `/es`, `/es/about`
+
+## Dependencies
+
+- `next` - Next.js framework
+- `next-intl` - Internationalization library
+- `lodash` - Utility functions (for `pick`)
+- `@types/lodash` - TypeScript types for lodash
+
+## 🔗 Useful Links
+
+- [next-intl Documentation](https://next-intl-docs.vercel.app/)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Intlayer](https://github.com/aymericzip/intlayer) - For automated translations
+
+## 📝 License
+
+MIT
+
