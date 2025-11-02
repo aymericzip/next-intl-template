@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
-import { locales, localizedPath } from "@/i18n";
+import { defaultLocale, type Locale, locales, localizedPath } from "@/i18n";
 
 // generateMetadata runs for each locale, generating SEO-friendly metadata
 // This helps search engines understand alternate language versions
@@ -13,7 +13,7 @@ export async function generateMetadata({
 	params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
 	const { locale } = await params;
-	const t = await getTranslations({ locale, namespace: "home" });
+	const t = await getTranslations("home");
 
 	const url = "/";
 	const languages = Object.fromEntries(
@@ -32,10 +32,10 @@ export async function generateMetadata({
 
 export default async function HomeLayout({
 	children,
-  params,
+	params,
 }: {
 	children: ReactNode;
-	params: Promise<{ locale: string }>;
+	params: Promise<{ locale: Locale }>;
 }) {
 	const { locale } = await params;
 
@@ -47,7 +47,10 @@ export default async function HomeLayout({
 	// NextIntlClientProvider makes translations available to client components
 	// Only pass the namespaces your client components actually use
 	return (
-		<NextIntlClientProvider locale={locale} messages={clientMessages}>
+		<NextIntlClientProvider
+			locale={locale ?? defaultLocale}
+			messages={clientMessages}
+		>
 			{children}
 		</NextIntlClientProvider>
 	);

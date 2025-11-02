@@ -3,13 +3,8 @@ import { getTranslations } from "next-intl/server";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { Link } from "@/i18n";
 
-export default async function Home({
-	params,
-}: {
-	params: Promise<{ locale: string }>;
-}) {
-	const { locale } = await params;
-	const t = await getTranslations({ locale, namespace: "common" });
+export default async function HomePage() {
+	const t = await getTranslations("common");
 
 	return (
 		<div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">

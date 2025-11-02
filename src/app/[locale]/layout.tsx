@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
-import { isRTL, locales } from "@/i18n";
+import { isRTL, type Locale, locales } from "@/i18n";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -30,7 +30,7 @@ export default async function LocaleLayout({
 	params,
 }: {
 	children: ReactNode;
-	params: Promise<{ locale: string }>;
+	params: Promise<{ locale: Locale }>;
 }) {
 	// In Next.js App Router, params is a Promise (can be await'd)
 	// This allows for dynamic route segments to be resolved asynchronously
