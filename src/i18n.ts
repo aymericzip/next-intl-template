@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
-import { getRequestConfig } from "next-intl/server";
+import createMiddleware from "next-intl/middleware";
+import {createNavigation} from 'next-intl/navigation';
 
 // Define supported locales with type safety
 export const locales = ["en", "fr", "es"] as const;
@@ -18,6 +19,7 @@ async function loadMessages(locale: Locale) {
         import(`../locales/${locale}/common.json`).then((m) => m.default),
         import(`../locales/${locale}/home.json`).then((m) => m.default),
         import(`../locales/${locale}/about.json`).then((m) => m.default),
+        // ... Future JSON files should be added here
     ]);
 
     return { common, home, about } as const;
@@ -30,29 +32,46 @@ export function localizedPath(locale: string, path: string) {
 
 // getRequestConfig runs on every request and provides messages to server components
 // This is where next-intl hooks into Next.js's server-side rendering
-export default getRequestConfig(async ({ locale }) => {
-	// Validate that locale is defined and in our supported locales
-	if (!locale || !locales.includes(locale as Locale)) notFound();
+export default async function getRequestConfig({
+  requestLocale,
+}: {
+  requestLocale: Promise<string | undefined>;
+}) {
+  const requested : Locale = (await requestLocale) as Locale ?? defaultLocale;
 
-	return {
-		locale,
-		messages: await loadMessages(locale as Locale),
-	};
-});
+  if (!locales.includes(requested))
+    notFound();
 
 
-import {createNavigation} from 'next-intl/navigation';
- 
-export const {Link, redirect, usePathname, useRouter, getPathname} =
-  createNavigation({
-    locales,
-    defaultLocale,
-    localePrefix: 'as-needed',
+  return {
+    locale: requested,
+    messages: await loadMessages(requested),
+  };
+}
+
+export function getCookie(locale: Locale) {
+  return [
+    `NEXT_LOCALE=${locale}`,
+    "Path=/",
+    `Max-Age=${60 * 60 * 24 * 365}`, // 1 year
+    "SameSite=Lax",
+  ].join("; ");
+}
+
+const routingOptions = {
+  locales,
+  defaultLocale,
+  localePrefix: 'as-needed', // Change /en/... route to /...
     // Optional: localized pathnames
     // pathnames: {
     //   '/': '/',
     //   '/about': {en: '/about', fr: '/a-propos', es: '/acerca-de'},
     //   '/blog/[slug]': '/blog/[slug]'
     // }
-  });
+  //  localeDetection: true, // prevent "/" -> "/en" redirects from cookie
+} as const;
+ 
+export const {Link, redirect, usePathname, useRouter, getPathname} =
+  createNavigation(routingOptions);
 
+export const proxy = createMiddleware(routingOptions);

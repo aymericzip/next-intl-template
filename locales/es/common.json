@@ -1,5 +1,7 @@
 {
   "welcome": "Bienvenido",
-  "greeting": "¡Hola mundo!"
+  "greeting": "¡Hola mundo!",
+  "aboutPage": "Página Acerca de",
+  "documentation": "Documentación"
 }
 

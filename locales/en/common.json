@@ -1,5 +1,7 @@
 {
   "welcome": "Welcome",
-  "greeting": "Hello, world!"
+  "greeting": "Hello, world!",
+  "aboutPage": "About Page",
+  "documentation": "Documentation"
 }
 

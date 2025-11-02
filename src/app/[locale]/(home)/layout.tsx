@@ -39,9 +39,6 @@ export default async function HomeLayout({
 }) {
 	const { locale } = await params;
 
-	console.log('HomeLayout');
-
-
 	// Messages are loaded server-side. Push only what's needed to the client.
 	// This minimizes the JavaScript bundle sent to the browser
 	const messages = await getMessages();

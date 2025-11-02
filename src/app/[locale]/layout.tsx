@@ -40,8 +40,6 @@ export default async function LocaleLayout({
 	// Without this, getTranslations() won't know which locale to use in server components
 	setRequestLocale(locale);
 
-  console.log('LocaleLayout');
-
 	return (
 		<html lang={locale} dir={isRTL(locale) ? "rtl" : "ltr"}>
 			<body
