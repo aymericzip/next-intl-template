@@ -4,7 +4,7 @@ import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { Link } from "@/i18n";
 
 export default async function HomePage() {
-	const t = await getTranslations("common");
+	const t = await getTranslations('home');
 
 	return (
 		<div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">

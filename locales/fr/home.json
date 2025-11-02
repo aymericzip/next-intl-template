@@ -1,4 +1,6 @@
 {
-  "title": "Accueil",
-  "description": "Description de la page d'accueil"
+  "welcome": "Bienvenue",
+  "greeting": "Bonjour le monde!",
+  "aboutPage": "Page À propos",
+  "documentation": "Documentation"
 }
