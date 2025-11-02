@@ -14,11 +14,6 @@ const getLocaleLabel = (locale: Locale): string => {
   }
 };
 
-const localeFlags: Record<Locale, string> = {
-  en: "🇬🇧",
-  fr: "🇫🇷",
-  es: "🇪🇸",
-};
 
 export default function LocaleSwitcher() {
   const activeLocale = useLocale();
@@ -56,9 +51,6 @@ export default function LocaleSwitcher() {
                   : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
               }`}
             >
-              <span className="text-lg" aria-hidden="true">
-                {localeFlags[locale]}
-              </span>
               <span className="hidden sm:inline">{getLocaleLabel(locale)}</span>
               <span className="sm:hidden">{locale.toUpperCase()}</span>
             </Link>

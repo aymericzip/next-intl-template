@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
-import ClientComponentExample from "@/components/ClientComponentExample";
+import ClientComponent from "@/components/ClientComponent";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import ServerComponent from "@/components/ServerComponent";
 
@@ -37,7 +37,7 @@ export default async function AboutPage() {
 						<h2 className="text-2xl font-semibold mb-6 text-black dark:text-zinc-50">
 							Client Component Example
 						</h2>
-						<ClientComponentExample />
+						<ClientComponent />
 					</div>
 
 					<div className="w-full border-t border-zinc-200 dark:border-zinc-800 pt-8 mt-8">

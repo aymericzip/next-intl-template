@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
-import { useTranslations, useFormatter } from "next-intl";
+import { useFormatter, useTranslations } from "next-intl";
+import { useState } from "react";
 
-const ClientComponentExample = () => {
+const ClientComponent = () => {
   // Scope directly to the nested object
   // useTranslations/useFormatter are hooks that read from NextIntlClientProvider context
   // They only work if the component is wrapped in NextIntlClientProvider
@@ -32,5 +32,4 @@ const ClientComponentExample = () => {
   );
 };
 
-export default ClientComponentExample;
-
+export default ClientComponent;
