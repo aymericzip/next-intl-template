@@ -9,7 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "intlayer": "latest",
+    "intlayer": "canary",
     "lodash": "^4.17.21",
     "next": "16.0.4",
     "next-intl": "^4.4.0",
