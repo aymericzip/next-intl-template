@@ -9,7 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "intlayer": "canary",
+    "intlayer": "latest",
     "lodash": "^4.17.21",
     "next": "16.0.4",
     "next-intl": "^4.4.0",
@@ -17,8 +17,8 @@
     "react-dom": "19.2.0"
   },
   "devDependencies": {
-    "@intlayer/sync-json-plugin": "8.0.0-canary.5",
-    "@intlayer/ai": "8.0.0-canary.5",
+    "@intlayer/sync-json-plugin": "latest",
+    "@intlayer/ai": "latest",
     "@tailwindcss/postcss": "^4.1.17",
     "@types/lodash": "^4.17.21",
     "@types/node": "^24.10.1",
