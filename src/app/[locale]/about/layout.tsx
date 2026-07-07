@@ -10,9 +10,10 @@ import { defaultLocale, type Locale, locales, localizedPath } from "@/i18n";
 export async function generateMetadata({
 	params,
 }: {
-	params: Promise<{ locale: Locale }>;
+	params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
 	const { locale } = await params;
+	const validLocale = locale as Locale;
 	const t = await getTranslations("about");
 
 	const url = "/about";
@@ -35,9 +36,10 @@ export default async function AboutLayout({
 	params,
 }: {
 	children: ReactNode;
-	params: Promise<{ locale: Locale }>;
+	params: Promise<{ locale: string }>;
 }) {
 	const { locale } = await params;
+	const validLocale = locale as Locale;
 
 	// Messages are loaded server-side. Push only what's needed to the client.
 	// This minimizes the JavaScript bundle sent to the browser
@@ -47,7 +49,8 @@ export default async function AboutLayout({
 	// NextIntlClientProvider makes translations available to client components
 	// Only pass the namespaces your client components actually use
 	return (
-		<NextIntlClientProvider locale={locale ?? defaultLocale} messages={clientMessages}>
+		<NextIntlClientProvider
+			locale={validLocale ?? defaultLocale} messages={clientMessages}>
 			{children}
 		</NextIntlClientProvider>
 	);

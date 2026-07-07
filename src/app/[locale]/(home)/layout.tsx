@@ -35,9 +35,10 @@ export default async function HomeLayout({
 	params,
 }: {
 	children: ReactNode;
-	params: Promise<{ locale: Locale }>;
+	params: Promise<{ locale: string }>;
 }) {
 	const { locale } = await params;
+	const validLocale = locale as Locale;
 
 	// Messages are loaded server-side. Push only what's needed to the client.
 	// This minimizes the JavaScript bundle sent to the browser
@@ -48,7 +49,7 @@ export default async function HomeLayout({
 	// Only pass the namespaces your client components actually use
 	return (
 		<NextIntlClientProvider
-			locale={locale ?? defaultLocale}
+			locale={validLocale ?? defaultLocale}
 			messages={clientMessages}
 		>
 			{children}

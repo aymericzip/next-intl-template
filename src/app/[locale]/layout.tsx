@@ -30,15 +30,16 @@ export default async function LocaleLayout({
 	params,
 }: {
 	children: ReactNode;
-	params: Promise<{ locale: Locale }>;
+	params: Promise<{ locale: string }>;
 }) {
 	// In Next.js App Router, params is a Promise (can be await'd)
 	// This allows for dynamic route segments to be resolved asynchronously
 	const { locale } = await params;
+	const validLocale = locale as Locale;
 
 	// Critical: setRequestLocale tells next-intl which locale to use for this request
 	// Without this, getTranslations() won't know which locale to use in server components
-	setRequestLocale(locale);
+	setRequestLocale(validLocale);
 
 	return (
 		<html lang={locale} dir={isRTL(locale) ? "rtl" : "ltr"}>
